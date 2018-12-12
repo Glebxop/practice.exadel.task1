@@ -43,7 +43,7 @@ public class Main {
         arrayListComment.add(new Comment(345,once,"TitleComm1Long","TextComm1"));
         arrayListComment.add(new Comment(456,once,"Comm1short","TextComm1"));
         System.out.println(arrayListComment.toString());
-        //Collections.sort(arrayListComment,new UserContentTitleComparator());
+        Collections.sort(arrayListComment,new UserContentTitleComparator());
         System.out.println(arrayListComment.toString());
 
 
@@ -67,7 +67,7 @@ public class Main {
 
 
 
-        Set<Attachment>sortAttacment=new TreeSet<Attachment>();
+        Set<Attachment>sortAttacment=new TreeSet<Attachment>(Collections.<Attachment>reverseOrder());
         sortAttacment.add(new Attachment(23,twice,"TitleOne",3.14));
         sortAttacment.add(new Attachment(24,twice,"TitleFive",2.16));
         sortAttacment.add(new Attachment(27,twice,"TitleSix",4.10));
@@ -81,10 +81,11 @@ public class Main {
         documentMy.add(comment);
         documentMy.add(annotation);
         documentMy.add(attachment);
-        System.out.println(documentMy.getUserContentList());
-        Collections.sort(documentMy.getUserContentList(),new UserContentTitleComparator());
-        System.out.println(documentMy.getUserContentList());
+        documentMy.getUserContentList().sort(new UserContentTitleComparator());
+        Collections.reverse(documentMy.getUserContentList());
 
+
+        System.out.println(documentMy.getUserContentList());
 
 
 

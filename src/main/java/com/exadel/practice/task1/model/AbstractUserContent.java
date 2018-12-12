@@ -2,13 +2,18 @@ package com.exadel.practice.task1.model;
 
 public abstract class AbstractUserContent {
 
-     int id;
-     User user;
-     String title;
+   protected   int id;
+   protected   User user;
+   protected   String title;
 
     public AbstractUserContent() {
     }
 
+    public AbstractUserContent(int id, User user, String title) {
+        this.id = id;
+        this.user = user;
+        this.title = title;
+    }
 
     public String getTitle(){
        return title;

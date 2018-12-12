@@ -10,9 +10,7 @@ public class Comment extends AbstractUserContent implements Showable {
     private String text;
 
     public Comment(int id, User user, String title, String text) {
-        this.id = id;
-        this.user = user;
-        this.title = title;
+        super(id, user, title);
         this.text = text;
     }
 
@@ -30,5 +28,11 @@ public class Comment extends AbstractUserContent implements Showable {
                 '}';
     }
 
+    public String getText() {
+        return text;
+    }
 
+    public void setText(String text) {
+        this.text = text;
+    }
 }

@@ -10,12 +10,32 @@ public class Annotation extends AbstractUserContent implements Showable {
     private int endPos;
     private String text;
 
-
-
     public Annotation(int id, User user, String title, String text) {
-        this.id = id;
-        this.user = user;
-        this.title = title;
+        super(id, user, title);
+        this.text = text;
+    }
+
+    public int getStartPos() {
+        return startPos;
+    }
+
+    public void setStartPos(int startPos) {
+        this.startPos = startPos;
+    }
+
+    public int getEndPos() {
+        return endPos;
+    }
+
+    public void setEndPos(int endPos) {
+        this.endPos = endPos;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
         this.text = text;
     }
 

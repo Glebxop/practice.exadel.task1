@@ -9,15 +9,14 @@ public class Attachment extends AbstractUserContent implements Downloadeble, Com
 
     private double fileSize;
 
+
     public Attachment(int id, User user, String title, double fileSize) {
-        this.id = id;
-        this.user = user;
-        this.title = title;
+        super(id, user, title);
         this.fileSize = fileSize;
     }
 
     public void download(){
-        System.out.println(toString());
+        System.out.println(this);
     }
 
     @Override
@@ -34,19 +33,13 @@ public class Attachment extends AbstractUserContent implements Downloadeble, Com
         return fileSize;
     }
 
-    public String getTitle() {
-        return title;
+    public void setFileSize(double fileSize) {
+        this.fileSize = fileSize;
     }
 
-
-
     public int compareTo(Attachment o) {
-       /* if (fileSize<o.getFileSize())
-            return 1;
-        else if (fileSize>o.getFileSize())
-            return -1;
-        else return 0;*/
 
-        return -((Double)fileSize).compareTo(o.getFileSize());
+
+        return Double.compare(fileSize, o.getFileSize());
     }
 }
