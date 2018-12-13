@@ -83,8 +83,6 @@ public class Main {
         documentMy.add(attachment);
         documentMy.getUserContentList().sort(new UserContentTitleComparator());
         Collections.reverse(documentMy.getUserContentList());
-
-
         System.out.println(documentMy.getUserContentList());
 
 

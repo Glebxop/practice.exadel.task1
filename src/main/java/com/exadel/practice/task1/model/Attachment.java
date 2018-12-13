@@ -8,6 +8,7 @@ public class Attachment extends AbstractUserContent implements Downloadeble, Com
 
 
     private double fileSize;
+    final static int IDUSERCONTANT=0;
 
 
     public Attachment(int id, User user, String title, double fileSize) {
@@ -16,8 +17,20 @@ public class Attachment extends AbstractUserContent implements Downloadeble, Com
     }
 
     public void download(){
-        System.out.println(this);
+        System.out.println("Downloading "+this);
     }
+    public String serializeToCsv(){
+        return IDUSERCONTANT+","+id+","+user.getId()+","+user.getName()+","+user.getEmail()+","+title+","+fileSize;
+    }
+
+
+   /* public Object deserializeFromCsv(String csvString) {
+        String[]csvStringSplit=csvString.split(",");
+
+        return new Annotation(Integer.valueOf(csvStringSplit[0]),
+                new User(Integer.valueOf(csvStringSplit[1]),csvStringSplit[2],csvStringSplit[3]),csvStringSplit[4],csvStringSplit[5]);
+
+    }*/
 
     @Override
     public String toString() {
