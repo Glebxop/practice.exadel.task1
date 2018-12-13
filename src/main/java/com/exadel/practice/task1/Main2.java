@@ -2,34 +2,43 @@ package com.exadel.practice.task1;
 
 import com.exadel.practice.task1.cswreaderwriter.MyCSVReader;
 import com.exadel.practice.task1.cswreaderwriter.MyCSVWriter;
+import com.exadel.practice.task1.file.csv.AnnotationContentDeseralizerCsv;
+import com.exadel.practice.task1.file.csv.AnnotationSerelizationCsv;
 import com.exadel.practice.task1.model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main2 {
-    public static void main(String []arg) throws IOException {
+    public static void main(String[] arg) throws IOException {
+        List<Comment> commentsList = new ArrayList<>();
+        List<Attachment> attachmentsList = new ArrayList<>();
+        List<Annotation> annotationList = new ArrayList<>();
 
-        User once=new User(0,"Vasia","Vasia@gmail.com");
-        User twice=new User(1,"Kolia","Kolia@gmail.com");
-        User thrice=new User(2,"Petia","Petia@mail");
-        Annotation annotation=new Annotation(2,twice,"LongWery","Text annotation");
-        Attachment attachment=new Attachment(53,thrice,"Average",3.28);
+        User once = new User(0, "Vasia", "Vasia@gmail.com");
+        User twice = new User(1, "Kolia", "Kolia@gmail.com");
+        User thrice = new User(2, "Petia", "Petia@mail");
+        Annotation annotation = new Annotation(2, twice, "LongWery", "Text annotation");
+        Attachment attachment = new Attachment(53, thrice, "Average53", 37.28);
+        Attachment attachment1 = new Attachment(54, once, "Average54", 3.2);
+        Attachment attachment2 = new Attachment(55, twice, "Average55", 35.28);
+        annotationList.add(annotation);
+        attachmentsList.add(attachment);
+        attachmentsList.add(attachment1);
+        attachmentsList.add(attachment2);
+        annotationList.add(new Annotation(44, once, "title44", "Text44"));
+        annotationList.add(new Annotation(47, thrice, "title47", "Text47"));
+        commentsList.add(new Comment(49, thrice, "title47", "Text47"));
+        commentsList.add(new Comment(496, thrice, "title496", "Text496"));
 
 
-        ArrayList<AbstractUserContent> annotationArrayList=new ArrayList<>();
-       annotationArrayList.add(annotation);
-       annotationArrayList.add(attachment);
-
-       annotationArrayList.add(new Annotation(44,once,"title44","Text44"));
-        annotationArrayList.add(new Annotation(47,thrice,"title47","Text47"));
-        annotationArrayList.add(new Comment(49,thrice,"title47","Text47"));
-
-
-        MyCSVWriter myCSVWriter=new MyCSVWriter();
-        myCSVWriter.write("D:/UserContent.csv",annotationArrayList);
-        MyCSVReader reader=new MyCSVReader();
-        ArrayList<AbstractUserContent> arrayList= (ArrayList) reader.read("D:/Annotation.csv");
+        MyCSVWriter<Annotation> myCSVWriter = new MyCSVWriter<>(new AnnotationSerelizationCsv());
+        myCSVWriter.write("D:/Annotation.csv", annotationList);
+        MyCSVReader<Annotation> reader = new MyCSVReader<>(new AnnotationContentDeseralizerCsv());
+        List<Annotation> arrayList = reader.read("D:/Annotation.csv");
         System.out.println(arrayList.toString());
+
+
     }
 }

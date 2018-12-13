@@ -1,33 +1,40 @@
 package com.exadel.practice.task1.cswreaderwriter;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.exadel.practice.task1.model.Factory;
-import com.exadel.practice.task1.model.AbstractUserContent;
+
+import com.exadel.practice.task1.file.csv.ContentDeserializerCSV;
 
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class MyCSVReader {
+public class MyCSVReader<T> {
 
     private CSVReader csvReader;
 
-    public ArrayList<AbstractUserContent> read(String fileCSVname) throws IOException {
-        csvReader = new CSVReader(new FileReader(fileCSVname));
-        String[] nextLine;
-        ArrayList<AbstractUserContent> arrayList = new ArrayList<>();
-        //String line;
-        Factory factory = new Factory();
+    private ContentDeserializerCSV<T> contentDeserializer;
 
-        while ((nextLine = csvReader.readNext()) != null) {
-            arrayList.add(factory.abstractUserContentNew(nextLine));
-
-            // line = String.join(",", nextLine);
-
-
-// arrayList.add(new Annotation().deserializeFromCsv(line));
-        }
-        return arrayList;
+    public MyCSVReader(ContentDeserializerCSV<T> contentDeserializer) {
+        this.contentDeserializer = contentDeserializer;
     }
+
+   public List<T> read(String fileCSVname ) throws IOException {
+       String[] nextLine;
+       List<T> listUserContent;
+       listUserContent = new ArrayList<>();
+       ArrayList<String[]> arrayList=new ArrayList<>();
+        csvReader=new CSVReader(new FileReader(fileCSVname));
+
+        while ((nextLine=csvReader.readNext())!=null){
+           arrayList.add(nextLine);}
+
+       listUserContent= (List<T>) contentDeserializer.deserializeFromCsv(arrayList);
+       return listUserContent;
+
+   }
+
+
+
 }

@@ -2,7 +2,7 @@ package com.exadel.practice.task1.model;
 
 import com.exadel.practice.task1.actions.Serializable;
 
-public abstract class AbstractUserContent implements Serializable {
+public abstract class AbstractUserContent {
 
 
 
