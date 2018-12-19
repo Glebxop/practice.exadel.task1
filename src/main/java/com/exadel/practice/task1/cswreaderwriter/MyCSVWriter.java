@@ -26,5 +26,7 @@ public class MyCSVWriter<T> {
                 writer.close();
             }
 
-
+    public void setContentSerializer(ContentSerializerCsv<T> contentSerializer) {
+        this.contentSerializer = contentSerializer;
+    }
 }

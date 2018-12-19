@@ -1,18 +1,11 @@
 package com.exadel.practice.task1.model;
 
-import com.exadel.practice.task1.actions.Serializable;
-
 public abstract class AbstractUserContent {
 
-
-
-
-
-
-    protected   int id;
-   protected   User user;
-   protected   String title;
-
+    protected int id;
+    protected User user;
+    protected String title;
+    
 
     public AbstractUserContent() {
     }
@@ -24,9 +17,9 @@ public abstract class AbstractUserContent {
 
     }
 
-    public String getTitle(){
-       return title;
-   }
+    public String getTitle() {
+        return title;
+    }
 
     public int getId() {
         return id;
@@ -48,5 +41,12 @@ public abstract class AbstractUserContent {
         this.title = title;
     }
 
-
+    @Override
+    public String toString() {
+        return "AbstractUserContent{" +
+                "id=" + id +
+                ", user=" + user +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

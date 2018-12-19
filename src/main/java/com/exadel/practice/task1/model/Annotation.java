@@ -6,10 +6,16 @@ import com.exadel.practice.task1.actions.Showable;
 public class Annotation extends AbstractUserContent implements Showable {
 
 
-
     private int startPos;
     private int endPos;
     private String text;
+
+
+
+
+
+    public Annotation() {
+    }
 
     public Annotation(int id, User user, String title, String text) {
         super(id, user, title);

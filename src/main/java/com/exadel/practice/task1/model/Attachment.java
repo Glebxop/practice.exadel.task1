@@ -11,6 +11,7 @@ public class Attachment extends AbstractUserContent implements Downloadeble, Com
 
 
 
+
     public Attachment(int id, User user, String title, double fileSize) {
         super(id, user, title);
         this.fileSize = fileSize;
@@ -28,7 +29,6 @@ public class Attachment extends AbstractUserContent implements Downloadeble, Com
 
 
     public Attachment deserializeFromCsv(String[] csvStringSplit) {
-        //String[]csvStringSplit=csvString.split(",");
 
         return new Attachment(Integer.valueOf(csvStringSplit[0]),
                 new User(Integer.valueOf(csvStringSplit[1]),csvStringSplit[2],csvStringSplit[3]),csvStringSplit[4],Double.valueOf(csvStringSplit[5]));

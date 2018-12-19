@@ -2,15 +2,26 @@ package com.exadel.practice.task1.model;
 
 import com.exadel.practice.task1.actions.Addable;
 
+
 import java.util.List;
 
 public class Document implements Addable {
+
 
 
     private int id;
     private String title;
     private String text;
     private List<AbstractUserContent> userContentList;
+
+    public Document() {
+    }
+
+    public Document(int id, String title, String text) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+    }
 
     public Document(int id, String title, String text, List<AbstractUserContent> userContentList) {
         this.id = id;
@@ -56,4 +67,15 @@ public class Document implements Addable {
     public void setUserContentList(List<AbstractUserContent> userContentList) {
         this.userContentList = userContentList;
     }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", userContentList=" + userContentList +
+                '}';
+    }
+
 }

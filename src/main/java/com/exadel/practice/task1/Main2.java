@@ -2,9 +2,10 @@ package com.exadel.practice.task1;
 
 import com.exadel.practice.task1.cswreaderwriter.MyCSVReader;
 import com.exadel.practice.task1.cswreaderwriter.MyCSVWriter;
-import com.exadel.practice.task1.file.csv.AnnotationContentDeseralizerCsv;
-import com.exadel.practice.task1.file.csv.AnnotationSerelizationCsv;
+import com.exadel.practice.task1.file.csv.*;
+
 import com.exadel.practice.task1.model.*;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class Main2 {
         List<Comment> commentsList = new ArrayList<>();
         List<Attachment> attachmentsList = new ArrayList<>();
         List<Annotation> annotationList = new ArrayList<>();
+
+
 
         User once = new User(0, "Vasia", "Vasia@gmail.com");
         User twice = new User(1, "Kolia", "Kolia@gmail.com");
@@ -38,6 +41,25 @@ public class Main2 {
         MyCSVReader<Annotation> reader = new MyCSVReader<>(new AnnotationContentDeseralizerCsv());
         List<Annotation> arrayList = reader.read("D:/Annotation.csv");
         System.out.println(arrayList.toString());
+
+        System.out.println();
+
+        MyCSVWriter<Comment>myCSVWriterComment=new MyCSVWriter<>(new CommentContentSerializerCSV());
+        myCSVWriterComment.write("D:/Comment.csv",commentsList);
+        MyCSVReader<Comment>myCSVReaderComment=new MyCSVReader<>(new CommentContentDeserializerCSV());
+        List<Comment> listComment=myCSVReaderComment.read("D:/Comment.csv");
+        System.out.println(listComment.toString());
+
+        System.out.println();
+
+        MyCSVWriter<Attachment> myCSVWriterAttacment=new MyCSVWriter<>(new AttacmentContentSerealizationCsv());
+        myCSVWriterAttacment.write("D:/Attacment.csv",attachmentsList);
+        MyCSVReader<Attachment>myCSVReaderAttacment=new MyCSVReader<>(new AttacmentContentDeseralizerCsv());
+        List<Attachment> attachmentList=myCSVReaderAttacment.read("D:/Attacment.csv");
+        System.out.println(attachmentList.toString());
+
+
+
 
 
     }

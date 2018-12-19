@@ -23,7 +23,6 @@ public class MyCSVReader<T> {
    public List<T> read(String fileCSVname ) throws IOException {
        String[] nextLine;
        List<T> listUserContent;
-       listUserContent = new ArrayList<>();
        ArrayList<String[]> arrayList=new ArrayList<>();
         csvReader=new CSVReader(new FileReader(fileCSVname));
 

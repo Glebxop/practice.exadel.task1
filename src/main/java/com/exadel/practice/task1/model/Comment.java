@@ -8,7 +8,14 @@ public class Comment extends AbstractUserContent implements Showable {
 
     private String text;
 
+
     public Comment() {
+    }
+
+    public Comment(String text,int id,String title) {
+        this.id=id;
+        this.title=title;
+        this.text = text;
     }
 
     public Comment(int id, User user, String title, String text) {
