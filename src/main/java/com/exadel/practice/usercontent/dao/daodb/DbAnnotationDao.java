@@ -1,6 +1,8 @@
 package com.exadel.practice.usercontent.dao.daodb;
 
 import com.exadel.practice.usercontent.Exception.ConnectionExeption;
+import com.exadel.practice.usercontent.Exception.DaoExcepton;
+import com.exadel.practice.usercontent.Exception.DbException;
 import com.exadel.practice.usercontent.dao.Dao;
 import com.exadel.practice.usercontent.db.ConnectionsPool;
 import com.exadel.practice.usercontent.model.Annotation;
@@ -9,78 +11,62 @@ import com.exadel.practice.usercontent.model.User;
 import java.sql.*;
 
 
-public class DbAnnotationDao implements Dao<Annotation> {
-    private ConnectionsPool connectionsPool;
-    private ResultSet resultSet = null;
-    private Connection connection = null;
+public class DbAnnotationDao extends AbstractDaoDb implements Dao<Annotation> {
 
     public DbAnnotationDao() {
-        connectionsPool = ConnectionsPool.getConnectionsPool();
+        super();
+        super.SQLadd = "insert into  annotation (idUser, title, text) Values (?,?,?)";
+        super.SQLget = "select * from annotation where id= ?;";
+        super.SQLdell = "DELETE FROM annotation where id= ?;";
+        super.SQLup = "update annotation set annotation.idUser= ? , annotation.text=? , annotation.title= ? where annotation.id= ? ;";
+        super.SQLhasNext = "select * from annotation;";
     }
 
     @Override
-    public boolean add(Annotation annotation) {
+    public boolean add(Annotation annotation) throws DaoExcepton {
 
         try {
-            connection = connectionsPool.getConnect();
-            String SQL = "insert into  annotation (idUser, title, text) Values (?,?,?)";
-            PreparedStatement statement = connection.prepareStatement(SQL);
+            PreparedStatement statement = getStatement(SQLadd);
             statement.setInt(1, annotation.getUser().getId());
             statement.setString(2, annotation.getTitle());
             statement.setString(3, annotation.getText());
             statement.executeUpdate();
             return true;
 
-        } catch (ConnectionExeption exeption) {
-            System.out.println(exeption.getMessage());
-            return false;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new DbException("add failed");
         } finally {
             connectionsPool.closeConnection(connection);
         }
-        return false;
     }
 
     @Override
-    public boolean dell(int id) {
-
-
-        String SQL = "DELETE FROM annotation where id= ?;";
-        try {
-            connection = connectionsPool.getConnect();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+    public boolean dell(int id) throws DaoExcepton {
+ try {
+            PreparedStatement preparedStatement = getStatement(SQLdell);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
             return true;
-        } catch (ConnectionExeption exeption) {
-            System.out.println(exeption.getMessage());
-            return false;
-        } catch (SQLException e) {
-            return false;
+        }  catch (SQLException e) {
+            throw new DbException("dell failed");
         } finally {
             connectionsPool.closeConnection(connection);
         }
     }
 
     @Override
-    public boolean update(Annotation annotation) {
+    public boolean update(Annotation annotation) throws DaoExcepton {
 
         try {
-            connection = connectionsPool.getConnect();
-            String SQL = "update annotation set annotation.idUser= ? , annotation.text=? , annotation.title= ? where annotation.id= ? ;";
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            PreparedStatement preparedStatement = getStatement(SQLup);
             preparedStatement.setInt(1, annotation.getUser().getId());
             preparedStatement.setString(2, annotation.getText());
             preparedStatement.setString(3, annotation.getTitle());
             preparedStatement.setInt(4, annotation.getId());
             preparedStatement.executeUpdate();
             return true;
-        } catch (ConnectionExeption exeption) {
-            System.out.println(exeption.getMessage());
-            return false;
-        } catch (SQLException e) {
-            return false;
+        }  catch (SQLException e) {
+            throw new DbException("update failed");
         } finally {
             connectionsPool.closeConnection(connection);
         }
@@ -88,12 +74,10 @@ public class DbAnnotationDao implements Dao<Annotation> {
     }
 
     @Override
-    public Annotation get(int id) {
+    public Annotation get(int id) throws DaoExcepton {
         Annotation annotation = null;
-        String SQL = "select * from annotation where id= ?;";
         try {
-            connection = connectionsPool.getConnect();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            PreparedStatement preparedStatement = getStatement(SQLget);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -103,10 +87,8 @@ public class DbAnnotationDao implements Dao<Annotation> {
                 String title = resultSet.getString("title");
                 annotation = new Annotation(idAnn, new User(idUser, "", ""), title, text);
             }
-        } catch (ConnectionExeption exeption) {
-            System.out.println(exeption.getMessage());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new DbException("get failed");
         } finally {
             connectionsPool.closeConnection(connection);
         }
@@ -132,26 +114,5 @@ public class DbAnnotationDao implements Dao<Annotation> {
 
     }
 
-    public boolean hasNext() throws SQLException {
 
-        String SQL = "select * from annotation;";
-        Statement statement = null;
-        if (resultSet == null) {
-            try {
-                connection = connectionsPool.getConnect();
-            } catch (ConnectionExeption e) {
-                System.out.println(e.getMessage());
-            }
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SQL);
-        }
-        if (resultSet.next()) {
-            return true;
-        } else {
-            resultSet.close();
-            connectionsPool.closeConnection(connection);
-            return false;
-        }
-
-    }
 }

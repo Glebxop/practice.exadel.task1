@@ -17,14 +17,15 @@ public class DbCommentDao extends AbstractDaoDb implements Dao<Comment> {
         super.SQLget = "select * from comment where id= ?;";
         super.SQLdell = "DELETE FROM comment where id= ?;";
         super.SQLup = "update comment set comment.idUser= ? , comment.text=? , comment.title= ? where comment.id= ? ;";
+        super.SQLhasNext = "select * from comment;";
     }
 
     @Override
     public boolean add(Comment comment) throws ConnectionExeption, DbException {
 
         try {
-            getConnection();
-            PreparedStatement statement = connection.prepareStatement(SQLadd);
+
+            PreparedStatement statement = getStatement(SQLadd);
             statement.setInt(1, comment.getUser().getId());
             statement.setString(2, comment.getTitle());
             statement.setString(3, comment.getText());
@@ -40,8 +41,8 @@ public class DbCommentDao extends AbstractDaoDb implements Dao<Comment> {
     @Override
     public boolean dell(int id) throws ConnectionExeption, DbException {
         try {
-            getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQLdell);
+
+            PreparedStatement preparedStatement = getStatement(SQLdell);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
             return true;
@@ -56,15 +57,15 @@ public class DbCommentDao extends AbstractDaoDb implements Dao<Comment> {
     public boolean update(Comment comment) throws ConnectionExeption, DbException {
 
         try {
-            getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQLup);
+
+            PreparedStatement preparedStatement = getStatement(SQLup);
             preparedStatement.setInt(1, comment.getUser().getId());
             preparedStatement.setString(2, comment.getText());
             preparedStatement.setString(3, comment.getTitle());
             preparedStatement.setInt(4, comment.getId());
             preparedStatement.executeUpdate();
             return true;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DbException("update failed");
         } finally {
             connectionsPool.closeConnection(connection);
@@ -76,8 +77,8 @@ public class DbCommentDao extends AbstractDaoDb implements Dao<Comment> {
         Comment comment = null;
 
         try {
-            getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQLget);
+
+            PreparedStatement preparedStatement = getStatement(SQLget);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -113,27 +114,7 @@ public class DbCommentDao extends AbstractDaoDb implements Dao<Comment> {
 
     }
 
-    public boolean hasNext() throws SQLException, ConnectionExeption {
 
-        String SQL = "select * from comment;";
-        Statement statement;
-        if (resultSet == null) {
-            try {
-                connection = connectionsPool.getConnect();
-            } catch (ConnectionExeption exeption) {
-                throw exeption;
-            }
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SQL);
-        }
-        if (resultSet.next()) {
-            return true;
-        } else {
-            resultSet.close();
-            connectionsPool.closeConnection(connection);
-            return false;
-        }
 
-    }
 }
 
