@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+
+    <servlet>
+        <servlet-name>anotation</servlet-name>
+        <servlet-class>com.exadel.practice.usercontent.servlets.ServletAnotation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>anotation</servlet-name>
+        <url-pattern>/anotation</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>comments</servlet-name>
+        <servlet-class>com.exadel.practice.usercontent.servlets.ServletComment</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>comments</servlet-name>
+        <url-pattern>/comments</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>filterannotation</filter-name>
+        <filter-class>com.exadel.practice.usercontent.filters.AnnotationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>filterannotation</filter-name>
+        <url-pattern>/annotation.jsp</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>attachment</filter-name>
+        <filter-class>com.exadel.practice.usercontent.filters.AttacmentFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>attachment</filter-name>
+        <url-pattern>/attacment.jsp</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>filtercomment</filter-name>
+        <filter-class>com.exadel.practice.usercontent.filters.CommentFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>filtercomment</filter-name>
+        <url-pattern>/comments.jsp</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>attachment</servlet-name>
+        <servlet-class>com.exadel.practice.usercontent.servlets.ServletAttacment</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>attachment</servlet-name>
+        <url-pattern>/attacment</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>servlog</servlet-name>
+        <servlet-class>com.exadel.practice.usercontent.servlets.ServletLog</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>servlog</servlet-name>
+        <url-pattern>/log</url-pattern>
+    </servlet-mapping>
+
+</web-app>

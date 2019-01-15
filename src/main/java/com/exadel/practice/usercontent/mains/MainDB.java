@@ -3,8 +3,8 @@ package com.exadel.practice.usercontent.mains;
 
 import com.exadel.practice.usercontent.dao.Dao;
 import com.exadel.practice.usercontent.db.ConnectionsPool;
-import com.exadel.practice.usercontent.factorynewtry.AbstractDaoFactory;
-import com.exadel.practice.usercontent.factorynewtry.FactoryOfDaoFactories;
+import com.exadel.practice.usercontent.factorydao.AbstractDaoFactory;
+import com.exadel.practice.usercontent.factorydao.FactoryOfDaoFactories;
 
 public class MainDB {
     public static void main(String[] arg) throws Exception {

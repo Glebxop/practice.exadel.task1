@@ -22,59 +22,55 @@ public class DbAttacmentDao implements Dao<Attachment> {
     }
 
     @Override
-    public void add(Attachment attachment) {
+    public boolean add(Attachment attachment) {
 
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             String SQL = "insert into  attachment (idUser, title, fileSize) Values (?,?,?)";
             PreparedStatement statement = connection.prepareStatement(SQL);
             statement.setInt(1, attachment.getUser().getId());
             statement.setString(2, attachment.getTitle());
             statement.setDouble(3, attachment.getFileSize());
             statement.executeUpdate();
-            System.out.println("Attachment added");
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            return false;
         } finally {
             connectionsPool.closeConnection(connection);
         }
     }
 
     @Override
-    public void dell(int id) {
+    public boolean dell(int id) {
 
         String SQL = "DELETE FROM attachment where id= ?;";
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+
+            connection = connectionsPool.getConnect();
+
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            System.out.println("Attachment id=" + id + " delited");
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }finally {
+            return false;
+        } finally {
             connectionsPool.closeConnection(connection);
         }
 
     }
 
     @Override
-    public void update(Attachment attachment) {
+    public boolean update(Attachment attachment) {
 
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             String SQL = "update attachment set attachment.idUser= ? , attachment.fileSize=? , attachment.title= ? where attachment.id= ? ;";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, attachment.getUser().getId());
@@ -82,9 +78,12 @@ public class DbAttacmentDao implements Dao<Attachment> {
             preparedStatement.setString(3, attachment.getTitle());
             preparedStatement.setInt(4, attachment.getId());
             preparedStatement.executeUpdate();
-            System.out.println("Attachment updated");
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         } finally {
             connectionsPool.closeConnection(connection);
         }
@@ -96,11 +95,9 @@ public class DbAttacmentDao implements Dao<Attachment> {
         Attachment attachment = null;
         String SQL = "select * from attachment where id= ?;";
         try {
-            try {
+
                 connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -111,7 +108,9 @@ public class DbAttacmentDao implements Dao<Attachment> {
                 String title = resultSet.getString("title");
                 attachment = new Attachment(idAnn, new User(idUser, "", ""), title, text);
             }
-        } catch (SQLException e) {
+        }  catch (ConnectionExeption exeption) {
+        System.out.println(exeption.getMessage());
+    } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
             connectionsPool.closeConnection(connection);
@@ -132,7 +131,7 @@ public class DbAttacmentDao implements Dao<Attachment> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return  "id=" + idAnn + " idUser=" + idUser + " file size= " + fileSize + " title= " + title;
+        return "id=" + idAnn + " idUser=" + idUser + " file size= " + fileSize + " title= " + title;
 
     }
 

@@ -19,60 +19,55 @@ public class DbAnnotationDao implements Dao<Annotation> {
     }
 
     @Override
-    public void add(Annotation annotation) {
+    public boolean add(Annotation annotation) {
 
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             String SQL = "insert into  annotation (idUser, title, text) Values (?,?,?)";
             PreparedStatement statement = connection.prepareStatement(SQL);
             statement.setInt(1, annotation.getUser().getId());
             statement.setString(2, annotation.getTitle());
             statement.setString(3, annotation.getText());
             statement.executeUpdate();
-            System.out.println("Annotation added");
+            return true;
 
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }  finally {
+        } finally {
             connectionsPool.closeConnection(connection);
         }
+        return false;
     }
 
     @Override
-    public void dell(int id) {
+    public boolean dell(int id) {
 
 
         String SQL = "DELETE FROM annotation where id= ?;";
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            System.out.println("Annotation id=" + id + " delited");
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            return false;
         } finally {
             connectionsPool.closeConnection(connection);
         }
     }
 
     @Override
-    public void update(Annotation annotation) {
+    public boolean update(Annotation annotation) {
 
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             String SQL = "update annotation set annotation.idUser= ? , annotation.text=? , annotation.title= ? where annotation.id= ? ;";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, annotation.getUser().getId());
@@ -80,9 +75,12 @@ public class DbAnnotationDao implements Dao<Annotation> {
             preparedStatement.setString(3, annotation.getTitle());
             preparedStatement.setInt(4, annotation.getId());
             preparedStatement.executeUpdate();
-            System.out.println("Annotation updated");
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            return false;
         } finally {
             connectionsPool.closeConnection(connection);
         }
@@ -94,11 +92,7 @@ public class DbAnnotationDao implements Dao<Annotation> {
         Annotation annotation = null;
         String SQL = "select * from annotation where id= ?;";
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -109,9 +103,11 @@ public class DbAnnotationDao implements Dao<Annotation> {
                 String title = resultSet.getString("title");
                 annotation = new Annotation(idAnn, new User(idUser, "", ""), title, text);
             }
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }  finally {
+        } finally {
             connectionsPool.closeConnection(connection);
         }
         return annotation;

@@ -19,7 +19,7 @@ public class CsvUserDao implements Dao<User> {
     }
 
     @Override
-    public void add(User user) {
+    public boolean add(User user) {
         try {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName), true));
             String[] arrComment = new String[3];
@@ -28,13 +28,14 @@ public class CsvUserDao implements Dao<User> {
             arrComment[2] = user.getEmail();
             csvWriter.writeNext(arrComment);
             csvWriter.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+   return false; }
 
     @Override
-    public void dell(int id) {
+    public boolean dell(int id) {
         String[] nextLine;
         List<String[]> list = new ArrayList<>();
         try {
@@ -48,18 +49,18 @@ public class CsvUserDao implements Dao<User> {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName)));
             csvWriter.writeAll(list);
             csvWriter.close();
-
+return true;
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         }
 
     }
 
     @Override
-    public void update(User user) {
+    public boolean update(User user) {
 
         String[] nextLine;
         List<String[]> list = new ArrayList<>();
@@ -78,12 +79,12 @@ public class CsvUserDao implements Dao<User> {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName)));
             csvWriter.writeAll(list);
             csvWriter.close();
-
+return true;
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         }
     }
 

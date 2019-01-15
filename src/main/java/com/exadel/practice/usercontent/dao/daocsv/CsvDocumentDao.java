@@ -20,7 +20,7 @@ public class CsvDocumentDao implements Dao<Document> {
     }
 
     @Override
-    public void add(Document document) throws CsvException {
+    public boolean add(Document document) throws CsvException {
         try {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName), true));
             String[] arrComment = new String[(document.getUserContentList().size() * 3) + 3];
@@ -38,13 +38,14 @@ public class CsvDocumentDao implements Dao<Document> {
 
             csvWriter.writeNext(arrComment);
             csvWriter.close();
+            return true;
         } catch (IOException e) {
             throw new CsvException("document didn't add. trouble with csw writer");
         }
     }
 
     @Override
-    public void dell(int id) throws CsvException {
+    public boolean dell(int id) throws CsvException {
         String[] nextLine;
         List<String[]> list = new ArrayList<>();
         try {
@@ -58,7 +59,7 @@ public class CsvDocumentDao implements Dao<Document> {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName)));
             csvWriter.writeAll(list);
             csvWriter.close();
-
+return true;
         } catch (IOException e) {
             throw new CsvException("document didn't delit. trouble with csw writer or reader");
         }
@@ -66,7 +67,7 @@ public class CsvDocumentDao implements Dao<Document> {
     }
 
     @Override
-    public void update(Document document) throws CsvException {
+    public boolean update(Document document) throws CsvException {
         String[] nextLine;
         List<String[]> list = new ArrayList<>();
         try {
@@ -84,7 +85,7 @@ public class CsvDocumentDao implements Dao<Document> {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName)));
             csvWriter.writeAll(list);
             csvWriter.close();
-
+return true;
         } catch (IOException e) {
             throw new CsvException("document didn't update. trouble with csw writer or reader");
         }

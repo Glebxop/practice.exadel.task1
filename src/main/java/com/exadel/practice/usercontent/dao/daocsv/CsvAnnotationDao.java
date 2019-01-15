@@ -20,7 +20,7 @@ public class CsvAnnotationDao implements Dao<Annotation> {
     }
 
     @Override
-    public void add(Annotation annotation) {
+    public boolean add(Annotation annotation) {
         try {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName), true));
             String[] arrComment = new String[6];
@@ -32,13 +32,15 @@ public class CsvAnnotationDao implements Dao<Annotation> {
             arrComment[5] = annotation.getTitle();
             csvWriter.writeNext(arrComment);
             csvWriter.close();
+            return true;
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void dell(int id) {
+    public boolean dell(int id) {
         String[] nextLine;
         List<String[]> list = new ArrayList<>();
         try {
@@ -52,18 +54,20 @@ public class CsvAnnotationDao implements Dao<Annotation> {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName)));
             csvWriter.writeAll(list);
             csvWriter.close();
-
+            return true;
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
+            return false;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            return false;
         }
 
     }
 
     @Override
-    public void update(Annotation annotation) {
+    public boolean update(Annotation annotation) {
         String[] nextLine;
         List<String[]> list = new ArrayList<>();
         try {
@@ -84,14 +88,14 @@ public class CsvAnnotationDao implements Dao<Annotation> {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName)));
             csvWriter.writeAll(list);
             csvWriter.close();
-
+return true;
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         }
-            }
+    }
 
     @Override
     public Annotation get(int id) {
@@ -113,12 +117,12 @@ public class CsvAnnotationDao implements Dao<Annotation> {
         return annotation;
     }
 
-    public String read()  {
+    public String read() {
         String[] strings = null;
         try {
             strings = csvReader.readNext();
         } catch (IOException e) {
-            strings[0]="";
+            strings[0] = "";
             System.out.println(e.getMessage());
         }
         return String.join(",", strings);

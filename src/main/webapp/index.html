@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My super project!</title>
+</head>
+<body>
+<h1>Log in</h1>
+
+<form action="log"   method="post">
+    <label>Name:
+        <input type="text" name="name"><br/>
+    </label>
+    <label>Email:
+        <input type="email" name="email"><br/>
+    </label>
+    <input type="hidden" name="command" value="login"/><br>
+
+    <button  type="submit">LogIn</button>
+</form>
+
+<h5>Or</h5>
+
+<button onclick="location.href='views/jspreg.jsp'">Registration</button>
+
+</body>
+</html>

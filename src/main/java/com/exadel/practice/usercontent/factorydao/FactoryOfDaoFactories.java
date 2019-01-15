@@ -1,4 +1,4 @@
-package com.exadel.practice.usercontent.factorynewtry;
+package com.exadel.practice.usercontent.factorydao;
 
 public class FactoryOfDaoFactories {
 

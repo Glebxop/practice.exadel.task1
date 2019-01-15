@@ -19,7 +19,7 @@ private CSVReader csvReader;
     }
 
     @Override
-    public void add(Attachment attachment) {
+    public boolean add(Attachment attachment) {
         try {
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName), true));
             String[] arrComment = new String[6];
@@ -31,14 +31,14 @@ private CSVReader csvReader;
             arrComment[5] = attachment.getTitle();
             csvWriter.writeNext(arrComment);
             csvWriter.close();
+            return true;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         }
-
     }
 
     @Override
-    public void dell(int id) {
+    public boolean dell(int id) {
         String[] nextLine;
         List<String[]> list = new ArrayList<>();
         try {
@@ -52,14 +52,14 @@ private CSVReader csvReader;
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName)));
             csvWriter.writeAll(list);
             csvWriter.close();
-
+return true;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         }
     }
 
     @Override
-    public void update(Attachment attachment) {
+    public boolean update(Attachment attachment) {
         String[] nextLine;
         List<String[]> list = new ArrayList<>();
         try {
@@ -80,9 +80,9 @@ private CSVReader csvReader;
             CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(pathName)));
             csvWriter.writeAll(list);
             csvWriter.close();
-
+return true;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         }
     }
 

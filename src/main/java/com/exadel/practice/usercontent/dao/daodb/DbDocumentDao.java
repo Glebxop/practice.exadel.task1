@@ -23,12 +23,12 @@ public class DbDocumentDao implements Dao<Document> {
     }
 
     @Override
-    public void add(Document document) {
+    public boolean add(Document document) {
 
         try {
             try {
                 connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
+            } catch (ConnectionExeption exeption) {
                 System.out.println(exeption.getMessage());
             }
             String SQL = "insert into  document (id, title, text) Values (?,?,?)";
@@ -46,35 +46,36 @@ public class DbDocumentDao implements Dao<Document> {
                 preparedStatementListAtt.setDouble(4, attachment.getFileSize());
                 preparedStatementListAtt.executeUpdate();
             }
-            System.out.println("Document added");
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }finally {
+        } finally {
             connectionsPool.closeConnection(connection);
         }
+        return false;
     }
 
     @Override
-    public void dell(int id) {
+    public boolean dell(int id) {
 
         String SQL = "DELETE FROM document where id= ?;";
         String SQLList = "DELETE FROM listdocument where idDocument= ?;";
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
-            PreparedStatement preparedStatement=connection.prepareStatement(SQL);
-           preparedStatement.setInt(1,id);
-           preparedStatement.executeUpdate();
-           PreparedStatement preparedStatementList=connection.prepareStatement(SQLList);
-           preparedStatementList.setInt(1,id);
-           preparedStatementList.executeUpdate();
-            System.out.println("Document id=" + id + " delited");
+            connection = connectionsPool.getConnect();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            PreparedStatement preparedStatementList = connection.prepareStatement(SQLList);
+            preparedStatementList.setInt(1, id);
+            preparedStatementList.executeUpdate();
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }  finally {
+            return false;
+        } finally {
             connectionsPool.closeConnection(connection);
         }
 
@@ -82,24 +83,24 @@ public class DbDocumentDao implements Dao<Document> {
     }
 
     @Override
-    public void update(Document document) {
+    public boolean update(Document document) {
 
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             String SQL = "update document set document.title= ? , document.text=?  where comment.id= ? ;";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, document.getTitle());
             preparedStatement.setString(2, document.getText());
             preparedStatement.setInt(3, document.getId());
             preparedStatement.executeUpdate();
-            System.out.println("Document updated");
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }  finally {
+            return false;
+        } finally {
             connectionsPool.closeConnection(connection);
         }
     }
@@ -111,11 +112,7 @@ public class DbDocumentDao implements Dao<Document> {
         String SQL = "select * from document where id= ?;";
         String SQLlist = "select * from listdocument where idDocument= ?;";
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             PreparedStatement preparedStatementList = connection.prepareStatement(SQLlist);
             preparedStatement.setInt(1, id);
@@ -136,6 +133,8 @@ public class DbDocumentDao implements Dao<Document> {
 
                 document = new Document(idDoc, title, text, attachmentList);
             }
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -148,10 +147,10 @@ public class DbDocumentDao implements Dao<Document> {
 
 
         String SQLlist = "select * from listdocument where idDocument= ?;";
-        PreparedStatement preparedStatementList=null;
+        PreparedStatement preparedStatementList = null;
         List<Attachment> attachmentList = null;
         int idDoc = 0;
-        String title =null;
+        String title = null;
         String text = null;
         try {
             try {
@@ -176,9 +175,6 @@ public class DbDocumentDao implements Dao<Document> {
             e.printStackTrace();
         }
 
-        
-        
-
 
         return new Document(idDoc, title, text, attachmentList).toString();
     }
@@ -190,7 +186,7 @@ public class DbDocumentDao implements Dao<Document> {
         if (resultSet == null) {
             try {
                 connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
+            } catch (ConnectionExeption exeption) {
                 System.out.println(exeption.getMessage());
             }
             statement = connection.createStatement();

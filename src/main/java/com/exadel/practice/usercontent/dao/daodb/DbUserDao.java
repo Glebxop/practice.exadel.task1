@@ -1,5 +1,6 @@
 package com.exadel.practice.usercontent.dao.daodb;
 
+import com.exadel.practice.usercontent.Exception.DaoExcepton;
 import com.exadel.practice.usercontent.dao.Dao;
 import com.exadel.practice.usercontent.db.ConnectionsPool;
 
@@ -18,7 +19,7 @@ public class DbUserDao implements Dao<User> {
     }
 
     @Override
-    public void add(User user) {
+    public boolean add(User user) {
 
         try {
             connection = connectionsPool.getConnect();
@@ -27,7 +28,7 @@ public class DbUserDao implements Dao<User> {
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.executeUpdate();
-            System.out.println("User added");
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
@@ -36,10 +37,10 @@ public class DbUserDao implements Dao<User> {
             connectionsPool.closeConnection(connection);
         }
 
-    }
+   return false; }
 
     @Override
-    public void dell(int id) {
+    public boolean dell(int id) {
 
         String SQL = "DELETE FROM users where id= ?;";
         try {
@@ -47,11 +48,11 @@ public class DbUserDao implements Dao<User> {
             PreparedStatement statement = connection.prepareStatement(SQL);
             statement.setString(1, String.valueOf(id));
             statement.executeUpdate();
-            System.out.println("User id=" + id + " delited");
+            return true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();return false;
         } finally {
             connectionsPool.closeConnection(connection);
         }
@@ -59,7 +60,7 @@ public class DbUserDao implements Dao<User> {
     }
 
     @Override
-    public void update(User user) {
+    public boolean update(User user) {
 
         try {
             connection = connectionsPool.getConnect();
@@ -69,11 +70,11 @@ public class DbUserDao implements Dao<User> {
             preparedStatement.setString(2, user.getEmail());
             preparedStatement.setInt(3, user.getId());
             preparedStatement.executeUpdate();
-            System.out.println("User updated");
+            return true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();return false;
         } finally {
             connectionsPool.closeConnection(connection);
         }

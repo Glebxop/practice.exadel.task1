@@ -18,58 +18,54 @@ public class DbCommentDao implements Dao<Comment> {
     }
 
     @Override
-    public void add(Comment comment) {
+    public boolean add(Comment comment) {
 
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
+
             String SQL = "insert into  comment (idUser, title, text) Values (?,?,?)";
             PreparedStatement statement = connection.prepareStatement(SQL);
             statement.setInt(1, comment.getUser().getId());
             statement.setString(2, comment.getTitle());
             statement.setString(3, comment.getText());
             statement.executeUpdate();
-            System.out.println("Comment added");
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }  finally {
-            connectionsPool.closeConnection(connection);
-        }
-    }
-
-    @Override
-    public void dell(int id) {
-
-        String SQL = "DELETE FROM comment where id= ?;";
-        try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
-            PreparedStatement preparedStatement=connection.prepareStatement(SQL);
-            preparedStatement.setInt(1,id);
-            preparedStatement.executeUpdate();
-            System.out.println("Comment id=" + id + " delited");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            return false;
         } finally {
             connectionsPool.closeConnection(connection);
         }
     }
 
     @Override
-    public void update(Comment comment) {
+    public boolean dell(int id) {
+
+        String SQL = "DELETE FROM comment where id= ?;";
+        try {
+            connection = connectionsPool.getConnect();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        } finally {
+            connectionsPool.closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean update(Comment comment) {
 
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             String SQL = "update comment set comment.idUser= ? , comment.text=? , comment.title= ? where comment.id= ? ;";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, comment.getUser().getId());
@@ -77,10 +73,14 @@ public class DbCommentDao implements Dao<Comment> {
             preparedStatement.setString(3, comment.getTitle());
             preparedStatement.setInt(4, comment.getId());
             preparedStatement.executeUpdate();
-            System.out.println("Comment updated");
+            return true;
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }  finally {
+            return false;
+        } finally {
             connectionsPool.closeConnection(connection);
         }
     }
@@ -91,11 +91,7 @@ public class DbCommentDao implements Dao<Comment> {
 
         String SQL = "select * from comment where id= ?;";
         try {
-            try {
-                connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
-                System.out.println(exeption.getMessage());
-            }
+            connection = connectionsPool.getConnect();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -106,25 +102,26 @@ public class DbCommentDao implements Dao<Comment> {
                 String title = resultSet.getString("title");
                 comment = new Comment(idAnn, new User(idUser, "", ""), title, text);
             }
+        } catch (ConnectionExeption exeption) {
+            System.out.println(exeption.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             connectionsPool.closeConnection(connection);
         }
         return comment;
     }
 
-    public String read()  {
+    public String read() {
         int idAnn = 0;
-        int idUser =0;
+        int idUser = 0;
         String text = null;
         String title = null;
         try {
             idAnn = resultSet.getInt("id");
             idUser = resultSet.getInt("idUser");
-             text = resultSet.getString("text");
-             title = resultSet.getString("title");
+            text = resultSet.getString("text");
+            title = resultSet.getString("title");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,7 +137,7 @@ public class DbCommentDao implements Dao<Comment> {
         if (resultSet == null) {
             try {
                 connection = connectionsPool.getConnect();
-            }catch (ConnectionExeption exeption){
+            } catch (ConnectionExeption exeption) {
                 System.out.println(exeption.getMessage());
             }
             statement = connection.createStatement();
