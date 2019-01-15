@@ -1,5 +1,6 @@
 package com.exadel.practice.usercontent.dao;
 
+import com.exadel.practice.usercontent.Exception.ConnectionExeption;
 import com.exadel.practice.usercontent.Exception.DaoExcepton;
 
 

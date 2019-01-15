@@ -5,18 +5,19 @@ import com.exadel.practice.usercontent.dao.daodb.DbAttacmentDao;
 import com.exadel.practice.usercontent.model.AbstractUserContent;
 import com.exadel.practice.usercontent.model.Attachment;
 
-import javax.servlet.ServletException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ServletAttacment extends AbstractServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Attachment attachment = null;
         try {
-            chousenWhatToDo(req,resp,new DbAttacmentDao(),new Attachment());
+            chousenWhatToDo(req, resp, new DbAttacmentDao(), attachment);
         } catch (DaoExcepton daoExcepton) {
-            daoExcepton.printStackTrace();
+            resp.getWriter().write(daoExcepton.getMessage());
         }
     }
 
@@ -24,6 +25,6 @@ public class ServletAttacment extends AbstractServlet {
     protected AbstractUserContent creatModel(HttpServletRequest req) {
         int id = Integer.parseInt(req.getParameter("id"));
         String title = req.getParameter("title");
-        return new Attachment(id,setUser(req),title,Math.random());
+        return new Attachment(id, setUser(req), title, Math.random());
     }
 }

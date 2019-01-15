@@ -21,20 +21,21 @@ public class ServletAnotation extends AbstractServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Annotation annotation = null;
         try {
-            chousenWhatToDo(req,resp,new DbAnnotationDao(),new Annotation());
+            chousenWhatToDo(req, resp, new DbAnnotationDao(), annotation);
         } catch (DaoExcepton daoExcepton) {
-            daoExcepton.printStackTrace();
+            resp.getWriter().write(daoExcepton.getMessage());
         }
     }
 
     @Override
     protected AbstractUserContent creatModel(HttpServletRequest req) {
-        Annotation annotation=null;
+        Annotation annotation = null;
         String text = req.getParameter("text");
         int id = Integer.parseInt(req.getParameter("id"));
         String title = req.getParameter("title");
-        return new Annotation(id,setUser(req),title,text);
+        return new Annotation(id, setUser(req), title, text);
     }
 }

@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class ServletLog extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
 
         switch (req.getParameter("command")) {
             case "login": {
@@ -27,13 +27,14 @@ public class ServletLog extends HttpServlet {
                     req.getSession().setAttribute("id", logOrno);
                     resp.sendRedirect("views/jspchoise.jsp");
                 } else resp.sendRedirect("index.html");
-                break;           }
-            case "Registration":{
-                DbUserDao dbUserDao=new DbUserDao();
-                String name=req.getParameter("name");
-                String email=req.getParameter("email");
-                dbUserDao.add(new User(1,name,email));
-                req.getSession().setAttribute("id",login(name));
+                break;
+            }
+            case "Registration": {
+                DbUserDao dbUserDao = new DbUserDao();
+                String name = req.getParameter("name");
+                String email = req.getParameter("email");
+                dbUserDao.add(new User(1, name, email));
+                req.getSession().setAttribute("id", login(name));
             }
         }
     }

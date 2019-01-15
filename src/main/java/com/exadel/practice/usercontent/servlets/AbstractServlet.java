@@ -31,7 +31,7 @@ public abstract class AbstractServlet extends HttpServlet {
             req.getSession().setAttribute("userId", abstractUserContent.getUser().getId());
             req.getSession().setAttribute("text", abstractUserContent.getTitle());
             resp.sendRedirect("views/show.jsp");
-        }
+        } else resp.sendRedirect("views/sorry.jsp");
     }
 
     protected void addModel(HttpServletRequest req, HttpServletResponse resp, Dao dao) throws DaoExcepton, IOException {

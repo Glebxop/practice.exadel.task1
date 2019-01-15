@@ -2,6 +2,7 @@ package com.exadel.practice.usercontent.dao.daocsv;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+import com.exadel.practice.usercontent.Exception.CsvException;
 import com.exadel.practice.usercontent.dao.Dao;
 import com.exadel.practice.usercontent.model.Annotation;
 
@@ -105,7 +106,7 @@ return true;
             CSVReader csvReader = new CSVReader(new FileReader(new File(pathName)));
             while ((nextLine = csvReader.readNext()) != null) {
                 if (Integer.valueOf(nextLine[0]) == id) {
-                    return annotation = new Annotation(id, new User(Integer.valueOf(nextLine[1]), nextLine[2], nextLine[3]), nextLine[5], nextLine[4]);
+                    return  new Annotation(id, new User(Integer.valueOf(nextLine[1]), nextLine[2], nextLine[3]), nextLine[5], nextLine[4]);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -128,16 +129,20 @@ return true;
         return String.join(",", strings);
     }
 
-    public boolean hasNext() throws IOException {
-        if (csvReader == null) {
-            csvReader = new CSVReader(new FileReader(new File(pathName)));
-        }
+    public boolean hasNext() throws CsvException  {
+        try {
+            if (csvReader == null) {
+                csvReader = new CSVReader(new FileReader(new File(pathName)));
+            }
+
 
         if (csvReader.readNext() != null) {
             return true;
         } else {
             csvReader.close();
             return false;
+        }}catch (IOException e){
+            throw new CsvException("some trouble method hasNext");
         }
 
     }
