@@ -2,9 +2,9 @@
 <html>
 <head>
     <title>workwithattacment</title>
-    <link rel="stylesheet" href=https://www.w3schools.com/w3css/4/w3.css>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-<body><div>
+<body class="w3-dark-gray"><div>
     <h1>Add attacment</h1>
     <form action="${pageContext.request.contextPath}/attacment" method="post">
 

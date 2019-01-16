@@ -3,7 +3,7 @@ package com.exadel.practice.usercontent.model;
 
 import java.util.List;
 
-public class Document  {
+public class Document extends AbstractUserContent  {
 
 
 

@@ -1,10 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>workwithattacment</title>
-    <link rel="stylesheet" href=https://www.w3schools.com/w3css/4/w3.css>
+    <title>workwithattacment</title><link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-<body><div>
+<body class="w3-dark-gray"><div>
 
     <h1>Get attacment</h1>
     <form action="${pageContext.request.contextPath}/attacment" method="post"><label>id:

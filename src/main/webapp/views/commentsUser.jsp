@@ -2,9 +2,9 @@
 <html>
 <head>
     <title>workwithcomment</title>
-    <link rel="stylesheet" href=https://www.w3schools.com/w3css/4/w3.css>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-<body><div>
+<body class="w3-dark-gray"><div>
     </form>
     <h1>Get comment</h1>
     <form action="${pageContext.request.contextPath}/comments" method="post"><label>id:

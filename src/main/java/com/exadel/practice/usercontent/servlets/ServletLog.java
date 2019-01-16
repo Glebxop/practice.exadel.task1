@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class ServletLog extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         switch (req.getParameter("command")) {
             case "login": {
@@ -35,6 +35,7 @@ public class ServletLog extends HttpServlet {
                 String email = req.getParameter("email");
                 dbUserDao.add(new User(1, name, email));
                 req.getSession().setAttribute("id", login(name));
+                resp.sendRedirect("views/jspchoise.jsp");
             }
         }
     }
@@ -46,6 +47,7 @@ public class ServletLog extends HttpServlet {
 
 
     private int login(String name) {
+
 
         String SQL = "select * from users where name = ?;";
         ConnectionsPool connectionsPool = ConnectionsPool.getConnectionsPool();

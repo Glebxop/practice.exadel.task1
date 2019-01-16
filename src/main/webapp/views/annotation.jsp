@@ -2,9 +2,9 @@
 <html>
 <head>
     <title>workwithannotation</title>
-    <link rel="stylesheet" href=https://www.w3schools.com/w3css/4/w3.css>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-<body><div>
+<body class="w3-dark-gray"><div>
     <h1>Add annotation</h1>
     <form action="${pageContext.request.contextPath}/anotation" method="post">
         <label>Text:
